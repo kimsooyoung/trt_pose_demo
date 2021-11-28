@@ -1,0 +1,117 @@
+https://github.com/NVIDIA-AI-IOT/trt_pose
+
+
+# Setup Swapfile
+
+echo -e "${GREEN}==== Installing Swapfile ====${NC}"
+
+cd ~/Downloads
+if [ -d ./installSwapfile ]
+then
+	echo -e "${RED} delete exist folder ${NC}"
+	rm -rf installSwapfile
+fi
+
+git clone https://github.com/jetsonhacksnano/installSwapfile
+cd installSwapfile
+./installSwapfile.sh
+
+# Install PyTorch and Torchvision
+
+cd ~/Downloads
+wget https://nvidia.box.com/shared/static/p57jwntv436lfrd78inwl7iml6p13fzh.whl \
+    -O torch-1.8.0-cp36-cp36m-linux_aarch64.whl
+sudo apt-get install python3-pip libopenblas-base libopenmpi-dev -y
+pip3 install Cython
+pip3 install numpy torch-1.8.0-cp36-cp36m-linux_aarch64.whl
+
+
+sudo apt-get install libjpeg-dev zlib1g-dev libpython3-dev libavcodec-dev libavformat-dev libswscale-dev -y
+
+git clone --branch v0.9.0 https://github.com/pytorch/vision torchvision
+
+cd torchvision
+export BUILD_VERSION=0.9.0
+python3 setup.py install --user
+cd ../  # attempting to load torchvision from build dir will result in import error
+
+
+$ pip install 'pillow<7' # always needed for Python 2.7, not needed torchvision v0.5.0+ with Python 3.6
+
+
+# Vertification
+import torch
+print(torch.__version__)
+print('CUDA available: ' + str(torch.cuda.is_available()))
+print('cuDNN version: ' + str(torch.backends.cudnn.version()))
+a = torch.cuda.FloatTensor(2).zero_()
+print('Tensor a = ' + str(a))
+b = torch.randn(2).cuda()
+print('Tensor b = ' + str(b))
+c = a + b
+print('Tensor c = ' + str(c))
+
+import torchvision
+print(torchvision.__version__)
+
+>>> import torch
+print(torch.__version__)>>> print(torch.__version__)
+1.8.0
+>>> print('CUDA available: ' + str(torch.cuda.is_available()))
+CUDA available: True
+>>> print('cuDNN version: ' + str(torch.backends.cudnn.version()))
+cuDNN version: 8201
+>>> a = torch.cuda.FloatTensor(2).zero_()
+>>> print('Tensor a = ' + str(a))
+Tensor a = tensor([0., 0.], device='cuda:0')
+>>> b = torch.randn(2).cuda()
+>>> print('Tensor b = ' + str(b))
+Tensor b = tensor([-0.2121, -1.2169], device='cuda:0')
+>>> c = a + b
+>>> print('Tensor c = ' + str(c))
+Tensor c = tensor([-0.2121, -1.2169], device='cuda:0')
+>>> import torchvision
+>>> print(torchvision.__version__)
+0.9.0
+
+# Install torch2trt
+cd ~/Downloads
+
+git clone -b jp4.6_tensorrt8 https://github.com/chitoku/torch2trt.git
+cd torch2trt
+sudo python3 setup.py install --plugins
+Oh Yes => Finished processing dependencies for torch2trt==0.3.0
+
+
+## Error => jetpack 4.6 build Error
+https://github.com/NVIDIA-AI-IOT/torch2trt/pull/627
+
+get cuda version
+$ cd /usr/local
+rb-nano@rb-nano-desktop:/usr/local$ l
+bin/   cuda-10@    etc/    include/  man@   share/
+cuda@  cuda-10.2/  games/  lib/      sbin/  src/
+
+get trt version
+dpkg -l | grep nvinfer
+ii  libnvinfer-bin                                8.0.1-1+cuda10.2                           arm64        TensorRT binaries
+
+
+# Install other miscellaneous packages
+sudo pip3 install tqdm cython pycocotools
+sudo apt-get install python3-matplotlib
+
+# Install trt_pose
+git clone https://github.com/NVIDIA-AI-IOT/trt_pose
+cd trt_pose
+sudo python3 setup.py install
+Yes! => Finished processing dependencies for trt-pose==0.0.1
+
+cd tasks/human_pose/
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1XYDdCUdiF2xxx4rznmLb62SdOUZuoNbd' \
+    -O resnet18_baseline_att_224x224_A_epoch_249.pth
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=13FkJkx7evQ1WwP54UmdiDXWyFMY1OxDU' \
+    -O densenet121_baseline_att_256x256_B
+
+
+
