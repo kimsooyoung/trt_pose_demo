@@ -113,5 +113,7 @@ wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1XYDd
 wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=13FkJkx7evQ1WwP54UmdiDXWyFMY1OxDU' \
     -O densenet121_baseline_att_256x256_B
 
+# ROS Setup
 
+# Create Optimized Model
 
