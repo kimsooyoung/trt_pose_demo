@@ -63,3 +63,20 @@ ros2 launch ros2_trt_pose pose-estimation.launch.py
 ```
 
 
+# Notepad
+
+/body_joints
+/body_joints_array
+/body_skeleton
+/body_skeleton_array
+/clicked_point
+/detections_image
+/flip_image
+/goal_pose
+/image
+/initialpose
+/parameter_events
+/pose_msgs
+/rosout
+/tf
+/tf_static
