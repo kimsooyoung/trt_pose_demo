@@ -1,0 +1,23 @@
+# trt_pose
+
+
+pip3 install cython
+pip3 install traitlets
+
+pip3 install -U scikit-learn
+pip3 install scikit-learn
+
+cd ros2_seminar_ws/src/
+git clone https://github.com/NVIDIA-AI-IOT/ros2_trt_pose_hand.git
+cd ../
+roseloq
+rosdep install --from-paths src --ignore-src --rosdistro eloquent -y
+
+colcon build && source install/local_setup.sh
+
+sudo nvpmodel -m0
+
+cd ~/Downloads
+wget https://drive.google.com/file/d/1NCVo0FiooWccDzY7hCc5MAKaoUpts3mo/view?usp=sharing
+wget https://github.com/NVIDIA-AI-IOT/ros2_trt_pose_hand/blob/main
+
